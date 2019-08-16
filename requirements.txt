@@ -1,0 +1,11 @@
+django==2.2.3
+gdal==2.2.3
+numpy==1.17.0
+unidecode==1.1.1
+flask==1.1.1
+
+
+#sudo apt-get install libgdal-dev libgdal1h  # Apenas deb/ubuntu
+#pip install GDAL==2.2.3
+#export CPLUS_INCLUDE_PATH=/usr/include/gdal
+#export C_INCLUDE_PATH=/usr/include/gdal
