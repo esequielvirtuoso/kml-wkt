@@ -4,6 +4,8 @@ import os, zipfile, shutil
 def create_dir(dir_path):
     if not os.path.exists(dir_path):
         os.mkdir(dir_path)
+
+
 def remove_dir(dir_path):
     if os.path.exists(dir_path):
         shutil.rmtree(dir_path)
@@ -17,6 +19,7 @@ def extract_kmz(upload_folder, temp_folder):
                 shutil.move(temp_folder + '/doc.kml', temp_folder + '/' + filename.split('.')[0] + '.kml')
         elif filename.lower().endswith(".kml"):
             shutil.copy(os.path.join(upload_folder, filename), os.path.join(temp_folder, filename))
+
 
 def create_dir_structure(app, folder_name_hash_id):
     upload_folder = './temp/' + folder_name_hash_id + '/' + app.config['UPLOAD_FOLDER']
