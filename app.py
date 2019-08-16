@@ -25,10 +25,8 @@ def upload():
             return redirect(request.url)
 
         folder_name_hash_id = str(getrandbits(32))
-        upload_folder = './temp/' + folder_name_hash_id + '/' + app.config['UPLOAD_FOLDER']
-        temp_folder = './temp/' + folder_name_hash_id + '/' + app.config['TEMP_FOLDER']
-        out_folder = './temp/' + folder_name_hash_id + '/' + app.config['OUT_FOLDER']
-        create_dir_structure(app, folder_name_hash_id)
+
+        upload_folder, temp_folder, out_folder = create_dir_structure(app, folder_name_hash_id)
         table_name = request.form['table']
         buffer = int(request.form['buffer'])
         if 'file' not in request.files:

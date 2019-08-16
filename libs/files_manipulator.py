@@ -29,3 +29,5 @@ def create_dir_structure(app, folder_name_hash_id):
     create_dir(upload_folder)
     create_dir(temp_folder)
     create_dir(out_folder)
+
+    return upload_folder, temp_folder, out_folder
