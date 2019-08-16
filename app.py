@@ -1,22 +1,18 @@
 import os, zipfile
-from libs.utils import  remove_dir, extract_kmz, create_inserts, create_dir_structure
+from libs.utils import create_inserts, allowed_file
+from libs.files_manipulator import  remove_dir, extract_kmz, create_dir_structure
 from libs.models import create_table_agregator, create_table_statement
 from flask import Flask, flash, request, redirect, send_from_directory
 from werkzeug.utils import secure_filename
 from random import getrandbits
 
 # UPLOAD_FOLDER = './input_post'
-ALLOWED_EXTENSIONS = {'zip'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'in'
 app.config['TEMP_FOLDER'] = 'temp'
 app.config['OUT_FOLDER'] = 'out'
 # create_dir(app.config['OUT_FOLDER'])
-
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[-1].lower() in ALLOWED_EXTENSIONS
 
 
 
