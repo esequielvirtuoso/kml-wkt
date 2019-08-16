@@ -12,6 +12,10 @@ app.config['TEMP_FOLDER'] = 'temp'
 app.config['OUT_FOLDER'] = 'out'
 
 
+@app.route('/', methods=['GET'])
+def reroute():
+    return redirect('/upload')
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
