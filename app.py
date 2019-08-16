@@ -1,21 +1,15 @@
 import os, zipfile
 from libs.utils import create_inserts, allowed_file
-from libs.files_manipulator import  remove_dir, extract_kmz, create_dir_structure
+from libs.files_manipulator import remove_dir, extract_kmz, create_dir_structure
 from libs.models import create_table_agregator, create_table_statement
 from flask import Flask, flash, request, redirect, send_from_directory
 from werkzeug.utils import secure_filename
 from random import getrandbits
 
-# UPLOAD_FOLDER = './input_post'
-
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'in'
 app.config['TEMP_FOLDER'] = 'temp'
 app.config['OUT_FOLDER'] = 'out'
-# create_dir(app.config['OUT_FOLDER'])
-
-
-
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -31,7 +25,7 @@ def upload():
         out_folder = './temp/' + folder_name_hash_id + '/' + app.config['OUT_FOLDER']
         create_dir_structure(app, folder_name_hash_id)
         table_name = request.form['table']
-        buffer = int( request.form['buffer'])
+        buffer = int(request.form['buffer'])
         if 'file' not in request.files:
             flash('Sem parte arquivo!')
             return redirect(request.url)
@@ -80,8 +74,9 @@ def upload():
 
 @app.route('/uploads/<foldername>/out/<filename>', methods=['GET', 'POST'])
 def uploaded_file(foldername, filename):
-    return send_from_directory(os.path.join('temp', foldername,'out' ),
+    return send_from_directory(os.path.join('temp', foldername, 'out'),
                                filename)
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

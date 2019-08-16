@@ -2,7 +2,6 @@ import unidecode, re, json, os, shutil, zipfile
 from osgeo import ogr
 from .models import create_sql
 
-
 ALLOWED_EXTENSIONS = {'zip'}
 
 
@@ -10,8 +9,10 @@ def slugify(text):
     text = unidecode.unidecode(text).lower()
     return re.sub(r'[\W_]+', '_', text)
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[-1].lower() in ALLOWED_EXTENSIONS
+
 
 def fix_multigeometric(feat_json, table_name, filename_slug, buffer):
     polygons_coordinates = []
@@ -34,6 +35,7 @@ def fix_multigeometric(feat_json, table_name, filename_slug, buffer):
         feat_json['geometry']['type'] = 'MultiLineString'
         feat_json['geometry']['coordinates'] = linestrings_coordinates
         return create_sql(feat_json, table_name, filename_slug, buffer)
+
 
 def create_inserts(temp_folder, table_name, buffer) -> list:
     sql_inserts = []
@@ -62,6 +64,3 @@ def create_inserts(temp_folder, table_name, buffer) -> list:
 
                 feat = layer.GetNextFeature()
     return sql_inserts
-
-
-

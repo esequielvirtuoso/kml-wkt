@@ -20,9 +20,6 @@ def create_sql(feat_json, table_name, filename_slug, buffer):
     return comando_sql.format(table_name, filename_slug, pnt, buffer)
 
 
-
-
-
 def create_table_statement(table_name, temp):
     temp_table = ''
     primary_key = ''
