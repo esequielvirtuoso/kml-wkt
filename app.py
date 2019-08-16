@@ -2,6 +2,7 @@ import os, zipfile
 from libs.utils import create_inserts, allowed_file
 from libs.files_manipulator import remove_dir, extract_kmz, create_dir_structure
 from libs.models import create_table_agregator, create_table_statement
+from libs.views import upload_view
 from flask import Flask, flash, request, redirect, send_from_directory
 from werkzeug.utils import secure_filename
 from random import getrandbits
@@ -61,19 +62,7 @@ def upload():
 
             return redirect('/uploads/' + folder_name_hash_id + '/out/' + 'insert.sql')
 
-    return '''
-    <!doctype html>
-    <title>Carregar arquivo KML</title>
-    <h1>Carregar arquivos KML</h1>
-    <form method=post enctype=multipart/form-data>
-      <input required type=file name=file> </br></br>
-      <label for='buffer'>Tamanho do buffer:</lable>
-      <input type='text' name='buffer' value='0'> </br></br>
-      <label for='table'>Nome da tabela:</lable>
-      <input required type='text' name='table'> </br></br>
-      <input type=submit value=Upload> </br>
-    </form>
-    '''
+    return upload_view()
 
 
 @app.route('/uploads/<foldername>/out/<filename>', methods=['GET', 'POST'])
