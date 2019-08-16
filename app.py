@@ -1,8 +1,7 @@
 import os, zipfile
-from libs.utils import create_table_statement, create_dir, remove_dir, extract_kmz, create_inserts, \
-    create_dir_structure, create_table_agregator
-
-from flask import Flask, flash, request, redirect, url_for, send_from_directory
+from libs.utils import  remove_dir, extract_kmz, create_inserts, create_dir_structure
+from libs.models import create_table_agregator, create_table_statement
+from flask import Flask, flash, request, redirect, send_from_directory
 from werkzeug.utils import secure_filename
 from random import getrandbits
 
@@ -10,8 +9,7 @@ from random import getrandbits
 ALLOWED_EXTENSIONS = {'zip'}
 
 app = Flask(__name__)
-app.config[
-    'UPLOAD_FOLDER'] = 'in'  # TODO: Olhar como vou implementar as pastas para não gerar race conditions e permitir multiplos acessos
+app.config['UPLOAD_FOLDER'] = 'in'
 app.config['TEMP_FOLDER'] = 'temp'
 app.config['OUT_FOLDER'] = 'out'
 # create_dir(app.config['OUT_FOLDER'])
