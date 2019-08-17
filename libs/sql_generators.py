@@ -38,9 +38,14 @@ def insert_geom_sql(feat_json, table_name, filename_slug, buffer):
     return comando_sql.format(table_name, filename_slug, pnt, buffer)
 
 
-def final_insert_sql(table_name):
+def final_insert_sql(table_name, aggregate):
+    union, group = '', ''
+
+    if aggregate:
+        union = 'st_union(geom)'
+        group = 'group by nm_cliente, id_geoprocessamento'
     return '''
         insert into sd_producao.{0} (id_geoprocessamento, nm_cliente, geom) 
-        select id_geoprocessamento id_geoprocessamento, nm_cliente nm_cliente,  st_union(geom) geom 
-        from {0} group by nm_cliente, id_geoprocessamento;
-    '''.format(table_name)
+        select id_geoprocessamento id_geoprocessamento, nm_cliente nm_cliente,  {1} geom 
+        from {0} {2};
+    '''.format(table_name, union, group)

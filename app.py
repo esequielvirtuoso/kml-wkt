@@ -29,7 +29,7 @@ def upload():
         upload_folder, temp_folder, out_folder = create_dir_structure(app, folder_name_hash_id)
         table_name = request.form['table']
         buffer = int(request.form['buffer'])
-        agregar = request.form['agregar']
+        aggregate = request.form.get('aggregate')
         if 'file' not in request.files:
             flash('Sem parte arquivo!')
             return redirect(request.url)
@@ -56,7 +56,7 @@ def upload():
                 f.write(create_table_sql(table_name, True))
                 f.write('\n'.join(sql_inserts))
                 f.write(create_table_sql(table_name, False))
-                f.write(final_insert_sql(table_name))
+                f.write(final_insert_sql(table_name,aggregate))
                 f.write('COMMIT;\n')
 
             return redirect('/uploads/' + folder_name_hash_id + '/out/' + 'insert.sql')
