@@ -3,10 +3,12 @@ import json
 
 
 def create_table_sql(table_name, temp):
-    temp_table = 'sd_producao.' + table_name
-    create_index = ''
     if temp:
         temp_table = 'temp'
+    else:
+        temp_table = ''
+        table_name = 'sd_producao.' + table_name  # TODO: fix bug
+
     return '''create {1} table {0}
         (
             id_geoprocessamento varchar(255) not null,
