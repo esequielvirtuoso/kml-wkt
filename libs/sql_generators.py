@@ -19,25 +19,23 @@ def create_table_sql(table_name, temp):
         create index on {0} (id_geoprocessamento);
         create index on {0} (nm_cliente);
 
-        '''.format(table_name, temp_table, create_index)
+        '''.format(table_name, temp_table)
 
 
-def insert_geom_sql(feat_json, table_name, filename_slug, buffer):
+def insert_geom_sql(feat_json, filename_slug, buffer):
     geom = json.dumps(feat_json['geometry'])
     pnt = GEOSGeometry(geom)
 
-    if buffer:
+    if buffer: #TODO: remover todos os inserts de nome do cliente e adicionar do nome do arquivo
         comando_sql = '''
-        insert into {0} (id_geoprocessamento, nm_cliente, geom) 
-        values ('algar_mpe_{1}', 'ALGAR', ST_Buffer(ST_GeomFromText('{2}',4326)::geography, {3})::GEOMETRY);\n
+        ('algar_mpe_{0}', 'ALGAR', ST_Buffer(ST_GeomFromText('{1}',4326)::geography, {2})::GEOMETRY) 
         '''
     else:
         comando_sql = '''
-        insert into {0} (id_geoprocessamento, nm_cliente, geom)
-        values ('regional_{1}', 'ALGAR', ST_GeomFromText('{2}',4326));\n
+        ('regional_{0}', 'ALGAR', ST_GeomFromText('{1}',4326))
         '''
 
-    return comando_sql.format(table_name, filename_slug, pnt, buffer)
+    return comando_sql.format(filename_slug, pnt, buffer)
 
 
 def final_insert_sql(table_name, aggregate):
