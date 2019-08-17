@@ -54,7 +54,7 @@ def upload():
             with open(out_folder + '/' + 'insert.sql', 'w+') as f:
                 f.write('BEGIN;\n')
                 f.write(create_table_sql(table_name, True))
-                f.write('\n'.join(sql_inserts))
+                f.write(sql_inserts)
                 f.write(create_table_sql(table_name, False))
                 f.write(final_insert_sql(table_name,aggregate))
                 f.write('COMMIT;\n')

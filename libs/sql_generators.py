@@ -27,13 +27,9 @@ def insert_geom_sql(feat_json, filename_slug, buffer):
     pnt = GEOSGeometry(geom)
 
     if buffer: #TODO: remover todos os inserts de nome do cliente e adicionar do nome do arquivo
-        comando_sql = '''
-        ('algar_mpe_{0}', 'ALGAR', ST_Buffer(ST_GeomFromText('{1}',4326)::geography, {2})::GEOMETRY) 
-        '''
+        comando_sql = "('algar_mpe_{0}', 'ALGAR', ST_Buffer(ST_GeomFromText('{1}',4326)::geography, {2})::GEOMETRY)"
     else:
-        comando_sql = '''
-        ('regional_{0}', 'ALGAR', ST_GeomFromText('{1}',4326))
-        '''
+        comando_sql = "('regional_{0}', 'ALGAR', ST_GeomFromText('{1}',4326))"
 
     return comando_sql.format(filename_slug, pnt, buffer)
 
