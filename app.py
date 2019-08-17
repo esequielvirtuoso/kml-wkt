@@ -1,7 +1,7 @@
 import os, zipfile
 from libs.utils import create_inserts, allowed_file
 from libs.files_manipulator import remove_dir, extract_kmz, create_dir_structure
-from libs.models import create_table_agregator, create_table_statement
+from libs.sql_generators import final_insert_sql, create_table_sql
 from libs.views import upload_view
 from flask import Flask, flash, request, redirect, send_from_directory
 from werkzeug.utils import secure_filename
@@ -29,6 +29,7 @@ def upload():
         upload_folder, temp_folder, out_folder = create_dir_structure(app, folder_name_hash_id)
         table_name = request.form['table']
         buffer = int(request.form['buffer'])
+        agregar = request.form['agregar']
         if 'file' not in request.files:
             flash('Sem parte arquivo!')
             return redirect(request.url)
@@ -52,10 +53,10 @@ def upload():
 
             with open(out_folder + '/' + 'insert.sql', 'w+') as f:
                 f.write('BEGIN;\n')
-                f.write(create_table_statement(table_name, True))
+                f.write(create_table_sql(table_name, True))
                 f.write('\n'.join(sql_inserts))
-                f.write(create_table_statement(table_name, False))
-                f.write(create_table_agregator(table_name))
+                f.write(create_table_sql(table_name, False))
+                f.write(final_insert_sql(table_name))
                 f.write('COMMIT;\n')
 
             return redirect('/uploads/' + folder_name_hash_id + '/out/' + 'insert.sql')
