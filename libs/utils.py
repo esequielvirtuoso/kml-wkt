@@ -1,6 +1,6 @@
 import unidecode, re, json, os, shutil, zipfile
 from osgeo import ogr
-from .models import create_sql
+from .sql_generators import insert_geom_sql
 
 ALLOWED_EXTENSIONS = {'zip'}
 
@@ -30,11 +30,11 @@ def fix_multigeometric(feat_json, table_name, filename_slug, buffer):
     if len(polygons_coordinates):
         feat_json['geometry']['type'] = 'MultiPolygon'
         feat_json['geometry']['coordinates'] = polygons_coordinates
-        return create_sql(feat_json, table_name, filename_slug, buffer)
+        return insert_geom_sql(feat_json, table_name, filename_slug, buffer)
     if len(linestrings_coordinates):
         feat_json['geometry']['type'] = 'MultiLineString'
         feat_json['geometry']['coordinates'] = linestrings_coordinates
-        return create_sql(feat_json, table_name, filename_slug, buffer)
+        return insert_geom_sql(feat_json, table_name, filename_slug, buffer)
 
 
 def create_inserts(temp_folder, table_name, buffer) -> list:
@@ -58,7 +58,7 @@ def create_inserts(temp_folder, table_name, buffer) -> list:
                 if 'geometries' in feat_json['geometry']:
                     insert_statement = fix_multigeometric(feat_json, table_name, filename_slug, buffer)
                 else:
-                    insert_statement = create_sql(feat_json, table_name, filename_slug, buffer)
+                    insert_statement = insert_geom_sql(feat_json, table_name, filename_slug, buffer)
 
                 sql_inserts.append(insert_statement)
 
