@@ -8,7 +8,7 @@ def upload_view():
               <input required type=file name=file> </br></br>
               <label for='buffer'>Tamanho do buffer:</label>
               <input type='text' name='buffer' value='0'> </br></br>
-              <label for='aggregate'>Gerar um geom por arquivo?</label>
+              <label for='aggregate'>Gerar um geom para cada arquivo kml ou kmz?</label>
               <input type='checkbox' name='aggregate'> </br></br>
               <label for='table'>Nome da tabela:</label>
               <input required type='text' name='table'> </br></br>
