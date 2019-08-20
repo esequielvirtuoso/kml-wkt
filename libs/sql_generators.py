@@ -46,7 +46,7 @@ def final_insert_sql(table_name, aggregate):
 
     if aggregate:
         union = 'st_union(geom)'
-        group = 'group by id_geoprocessamento'
+        group = 'group by id_geoprocessamento, file_name'
     return '''
         insert into sd_producao.{0} (id_geoprocessamento, file_name, geom) 
         select id_geoprocessamento id_geoprocessamento, file_name file_name,  {1} geom 
