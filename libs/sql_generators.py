@@ -2,7 +2,6 @@ from django.contrib.gis.geos import GEOSGeometry
 import json, unidecode, re
 
 # TODO: check out the error: OGC WKT expected, EWKT provided - use GeomFromEWKT() for this that generates on inserts
-# TODO: remover algar mpe do id
 
 
 def slugify(text):
@@ -34,8 +33,8 @@ def insert_geom_sql(feat_json, buffer, filename):
     geom = json.dumps(feat_json['geometry'])
     pnt = GEOSGeometry(geom)
 
-    if buffer:  # TODO: remover nome do cliente e adicionar do nome do arquivo nos inserts
-        comando_sql = "('algar_mpe_{0}', '{1}', ST_Buffer(ST_GeomFromText('{2}',4326)::geography, {3})::GEOMETRY)"
+    if buffer:
+        comando_sql = "('{0}', '{1}', ST_Buffer(ST_GeomFromText('{2}',4326)::geography, {3})::GEOMETRY)"
     else:
         comando_sql = "('regional_{0}', '{1}', ST_GeomFromText('{2}',4326))"
 
