@@ -1,9 +1,13 @@
 from django.contrib.gis.geos import GEOSGeometry
-import json
-from .utils import slugify
-
+import json, unidecode, re
 
 # TODO: check out the error: OGC WKT expected, EWKT provided - use GeomFromEWKT() for this that generates on inserts
+# TODO: remover algar mpe do id
+
+
+def slugify(text):
+    text = unidecode.unidecode(text).lower()
+    return re.sub(r'[\W_]+', '_', text)
 
 def create_table_sql(table_name, temp):
     if temp:

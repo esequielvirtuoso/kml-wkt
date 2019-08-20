@@ -1,13 +1,11 @@
-import unidecode, re, json, os
+import json, os
 from osgeo import ogr
 from .sql_generators import insert_geom_sql
 
 ALLOWED_EXTENSIONS = {'zip'}
 
 
-def slugify(text):
-    text = unidecode.unidecode(text).lower()
-    return re.sub(r'[\W_]+', '_', text)
+
 
 
 def allowed_file(filename):
