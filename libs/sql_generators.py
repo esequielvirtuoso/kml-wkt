@@ -13,7 +13,7 @@ def create_table_sql(table_name, temp):
         temp_table = 'temp'
     else:
         temp_table = ''
-        table_name = 'sd_producao.' + table_name
+        table_name = 'sd_processamentos.' + table_name
 
     return '''create {1} table {0}
         (
@@ -48,7 +48,7 @@ def final_insert_sql(table_name, aggregate):
         union = 'st_union(geom)'
         group = 'group by id_geoprocessamento, file_name'
     return '''
-        insert into sd_producao.{0} (id_geoprocessamento, file_name, geom) 
+        insert into sd_proprocessamentos.{0} (id_geoprocessamento, file_name, geom) 
         select id_geoprocessamento id_geoprocessamento, file_name file_name,  {1} geom 
         from {0} {2};
     '''.format(table_name, union, group)
