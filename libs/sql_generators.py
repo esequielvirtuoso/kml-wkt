@@ -18,7 +18,8 @@ def create_table_sql(table_name, temp):
         (
             id_geoprocessamento varchar(255) not null,
             file_name          varchar(255),
-            geom                geometry
+            geom                geometry,
+            style               text
         );
 
         create index on {0} (id_geoprocessamento);

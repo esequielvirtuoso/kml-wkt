@@ -9,19 +9,8 @@ ALLOWED_EXTENSIONS = {'zip'}
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[-1].lower() in ALLOWED_EXTENSIONS
 
-
-def fix_multigeometric(feat_json, buffer, filename):
-    polygons_coordinates = []
-    linestrings_coordinates = []
-    geometries = feat_json['geometry']['geometries']
-
-    for shape in geometries:
-        if shape['type'] == 'LineString':
-            linestrings_coordinates.append(shape['coordinates'])
-        elif shape['type'] == 'Polygon':
-            polygons_coordinates.append(shape['coordinates'])
-
-    del feat_json['geometry']['geometries']
+def get_styles(file_path):
+    styles = []
 
     with open(file_path, 'r') as f:
         for line in f:
@@ -37,7 +26,7 @@ def create_inserts(temp_folder, table_name, buffer) -> list:
 
         driver = ogr.GetDriverByName('KML')
         datasource = driver.Open(temp_folder + '/' + filename)
-
+        styles = get_styles(temp_folder + '/' + filename)
         layers_count = datasource.GetLayerCount()
 
         for i in range(layers_count):
