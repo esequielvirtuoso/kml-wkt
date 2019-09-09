@@ -1,6 +1,5 @@
-from django.contrib.gis.geos import GEOSGeometry
+# from django.contrib.gis.geos import GEOSGeometry
 import json, unidecode, re
-
 # TODO: check out the error: OGC WKT expected, EWKT provided - use GeomFromEWKT() for this that generates on inserts
 
 
@@ -28,17 +27,18 @@ def create_table_sql(table_name, temp):
         '''.format(table_name, temp_table)
 
 
-def insert_geom_sql(feat_json, buffer, filename):
+def insert_geom_sql(feat_json, buffer, filename, style):
     filename_slug = slugify(filename)
-    geom = json.dumps(feat_json['geometry'])
-    pnt = GEOSGeometry(geom)
+    # geom = json.dumps(feat_json['geometry'])
+    # pnt = GEOSGeometry(geom)
 
-    if buffer:
-        comando_sql = "('{0}', '{1}', ST_Buffer(ST_GeomFromText('{2}',4326)::geography, {3})::GEOMETRY)"
-    else:
-        comando_sql = "('regional_{0}', '{1}', ST_GeomFromText('{2}',4326))"
+    # if buffer:
+    #     comando_sql = "('{0}', '{1}', ST_Buffer(ST_GeomFromText('{2}',4326)::geography, {3})::GEOMETRY)"
+    # else:
 
-    return comando_sql.format(filename_slug, filename, pnt, buffer)
+    comando_sql = "('{0}', '{1}', ST_GeomFromText('{2}',4326), '{4}')\n"
+    print(style)
+    return comando_sql.format(filename_slug, filename, feat_json.ExportToWkt(), buffer, style)
 
 
 def final_insert_sql(table_name, aggregate):
@@ -48,7 +48,7 @@ def final_insert_sql(table_name, aggregate):
         union = 'st_union(geom)'
         group = 'group by id_geoprocessamento, file_name'
     return '''
-        insert into sd_proprocessamentos.{0} (id_geoprocessamento, file_name, geom) 
-        select id_geoprocessamento id_geoprocessamento, file_name file_name,  {1} geom 
+        insert into sd_processamentos.{0} (id_geoprocessamento, file_name, geom, style) 
+        select id_geoprocessamento id_geoprocessamento, file_name file_name,  {1} geom, style style 
         from {0} {2};
     '''.format(table_name, union, group)
