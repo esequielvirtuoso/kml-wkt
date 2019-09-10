@@ -14,8 +14,8 @@ def remove_dir(dir_path):
 def extract_kmz(upload_folder, temp_folder):
     for filename in os.listdir(upload_folder):
         if filename.lower().endswith(".kmz"):
-            with zipfile.ZipFile(os.path.join(upload_folder, filename), 'r') as zip_ref:
-                zip_ref.extractall(temp_folder)
+            with zipfile.ZipFile(os.path.join(upload_folder, filename), 'r') as zip:
+                zip.extract( 'doc.kml', path=temp_folder)
                 shutil.move(temp_folder + '/doc.kml', temp_folder + '/' + filename.split('.')[0] + '.kml')
         elif filename.lower().endswith(".kml"):
             shutil.copy(os.path.join(upload_folder, filename), os.path.join(temp_folder, filename))
