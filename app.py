@@ -28,7 +28,7 @@ def upload():
 
         upload_folder, temp_folder, out_folder = create_dir_structure(app, folder_name_hash_id)
         table_name = request.form['table']
-        buffer = int(request.form['buffer'])
+        buffer = int(request.form['buffer'])/111122.19769899677
         aggregate = request.form.get('aggregate')
         if 'file' not in request.files:
             flash('Sem parte arquivo!')
