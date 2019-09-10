@@ -16,10 +16,10 @@ def create_table_sql(table_name, temp):
 
     return '''create {1} table {0}
         (
-            id_geoprocessamento varchar(255) not null,
-            file_name          varchar(255),
+            id_geoprocessamento text,
+            file_name           text,
             geom                geometry,
-            style               text
+            style               json
         );
 
         create index on {0} (id_geoprocessamento);
@@ -30,16 +30,10 @@ def create_table_sql(table_name, temp):
 
 def insert_geom_sql(feat_json, buffer, filename, style):
     filename_slug = slugify(filename)
-    # geom = json.dumps(feat_json['geometry'])
-    # pnt = GEOSGeometry(geom)
-
-    # if buffer:
-    #     comando_sql = "('{0}', '{1}', ST_Buffer(ST_GeomFromText('{2}',4326)::geography, {3})::GEOMETRY)"
-    # else:
 
     comando_sql = "('{0}', '{1}', ST_GeomFromText('{2}',4326), '{4}')\n"
     print(style)
-    return comando_sql.format(filename_slug, filename, feat_json.ExportToWkt(), buffer, style)
+    return comando_sql.format(filename_slug, filename, feat_json.ExportToWkt(), buffer, json.dumps(style))
 
 
 def final_insert_sql(table_name, aggregate):
